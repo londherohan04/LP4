@@ -1,0 +1,31 @@
+import heapq
+n = int(input("Enter number of characters: "))
+frequency = {}
+for i in range(n):
+    ch = input("Enter character: ")
+    freq = int(input("Enter frequency: "))
+    frequency[ch] = freq
+heap = [[freq, ch] for ch, freq in frequency.items()]
+heapq.heapify(heap)
+while len(heap) > 1:
+    left = heapq.heappop(heap)
+    right = heapq.heappop(heap)
+    merged = [left[0] + right[0], [left, right]]
+    heapq.heappush(heap, merged)
+codes = {}
+def generate_codes(tree, code=""):
+    if isinstance(tree[1], str):
+        codes[tree[1]] = code
+        return
+    left = tree[1][0]
+    right = tree[1][1]
+    generate_codes(left, code + "0")
+    generate_codes(right, code + "1")
+tree = heap[0]
+generate_codes(tree)
+print("\nCharacter Frequencies:")
+for ch, freq in frequency.items():
+    print(ch, ":", freq)
+print("\nHuffman Codes:")
+for ch, code in codes.items():
+    print(ch, ":", code)
